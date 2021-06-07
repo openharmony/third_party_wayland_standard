@@ -36,7 +36,7 @@ def main(argv):
   version = subprocess.check_output([cmd, '--version'],
                                     stderr=subprocess.STDOUT)
   # The version is of the form "wayland-scanner 1.18.0\n"
-  version = tuple([int(x) for x in version.strip().split(' ')[1].split('.')])
+  version = tuple([int(x) for x in version.decode().strip().split(' ')[1].split('.')])
 
   for protocol in protocols:
     protocol_path = os.path.join(src_root, protocol)
