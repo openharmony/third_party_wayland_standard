@@ -1,6 +1,6 @@
 import("//build/ohos.gni")
 
-template("python2_action") {
+template("python3_action") {
   action(target_name) {
     # Forward all variables. Ensure that testonly and visibility are forwarded
     # explicitly, since this performs recursive scope lookups, which is
@@ -16,7 +16,7 @@ template("python2_action") {
       "visibility",
     ])
 
-    script = "//third_party/wayland_standard/python2_action.py"
+    script = "//third_party/wayland_standard/python3_action.py"
     _rebased_script = rebase_path(invoker.script, root_build_dir)
     inputs = []
     inputs = [ invoker.script ]
@@ -54,7 +54,7 @@ template("wayland_protocol") {
 
   # Action which runs wayland-scanner to generate the code.
   # TODO(crbug.com/1112471): Get this to run cleanly under Python 3.
-  python2_action(action_name) {
+  python3_action(action_name) {
     visibility = [ ":$source_set_name" ]
     script = "//third_party/wayland_standard/wayland_scanner_wrapper.py"
     sources = invoker.sources
