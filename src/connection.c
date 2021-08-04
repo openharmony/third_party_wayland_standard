@@ -1011,11 +1011,10 @@ wl_closure_invoke(struct wl_closure *closure, uint32_t flags,
 		     count + 2, &ffi_type_void, ffi_types);
 
 	implementation = target->implementation;
-	if (!implementation[opcode]) {
-		wl_abort("listener function for opcode %u of %s is NULL\n",
-			 opcode, target->interface->name);
+	// OHOS fix: if listener function is not NULL, it will be call
+	if (implementation[opcode]) {
+		ffi_call(&cif, implementation[opcode], NULL, ffi_args);
 	}
-	ffi_call(&cif, implementation[opcode], NULL, ffi_args);
 
 	wl_closure_clear_fds(closure);
 }
