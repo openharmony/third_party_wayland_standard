@@ -1,3 +1,16 @@
+# Copyright (c) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import("//build/ohos.gni")
 import("//third_party/wayland_standard/wayland_protocol.gni")
 
@@ -84,10 +97,6 @@ config("wayland_util_public_config") {
     "include/protocol",
     "src",
   ]
-
-  cflags = [
-    "-Wno-macro-redefined",
-  ]
 }
 
 ohos_static_library("wayland_util") {
@@ -131,9 +140,6 @@ config("libwayland_cursor_public_config") {
   include_dirs = [
     "cursor",
   ]
-
-  cflags = [
-  ]
 }
 
 ohos_static_library("libwayland_cursor") {
@@ -175,9 +181,6 @@ config("libwayland_client_config") {
 config("libwayland_client_public_config") {
   include_dirs = [
     "src",
-  ]
-
-  cflags = [
   ]
 }
 
@@ -224,9 +227,6 @@ config("libwayland_server_config") {
 
 config("libwayland_server_public_config") {
   include_dirs = [
-  ]
-
-  cflags = [
   ]
 }
 
