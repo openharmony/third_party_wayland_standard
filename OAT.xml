@@ -74,7 +74,7 @@ Note:If the text contains special characters, please escape them according to th
                 <filteritem type="filename" name="README"/>
                 <filteritem type="filepath" name="m4/.*" desc="not use in OHOS"/>
                 <filteritem type="filepath" name="doc/publican/sources/.*" desc="not use in OHOS"/>
-                <filteritem type="filepath" name="dtddata.S" desc="no problem license"/>
+                <filteritem type="filename" name="dtddata.S" desc="no problem license"/>
             </filefilter>
             <filefilter name="copyrightPolicyFilter" desc="Filters for copyright header policies" >
                 <filteritem type="filename" name="README.OpenSource"/>
