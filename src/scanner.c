@@ -1817,12 +1817,14 @@ emit_code(struct protocol *protocol, enum visibility vis)
 		printf("#ifndef __has_attribute\n"
 		       "# define __has_attribute(x) 0  /* Compatibility with non-clang compilers. */\n"
 		       "#endif\n\n");
-
+/*
 		printf("#if (__has_attribute(visibility) || defined(__GNUC__) && __GNUC__ >= 4)\n"
 		       "#define WL_PRIVATE __attribute__ ((visibility(\"hidden\")))\n"
 		       "#else\n"
 		       "#define WL_PRIVATE\n"
 		       "#endif\n\n");
+*/
+        printf("#define WL_PRIVATE\n");
 	} else {
 		symbol_visibility = "WL_EXPORT";
 	}

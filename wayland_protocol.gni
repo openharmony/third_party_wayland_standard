@@ -7,14 +7,17 @@ template("python3_action") {
     # required to ensure their definition from scopes above the caller are
     # properly handled. All other variables are forwarded with "*", which
     # doesn't perform recursive lookups at all. See https://crbug.com/862232
-    forward_variables_from(invoker, [
-      "testonly",
-      "visibility",
-    ])
-    forward_variables_from(invoker, "*", [
-      "testonly",
-      "visibility",
-    ])
+    forward_variables_from(invoker,
+                           [
+                             "testonly",
+                             "visibility",
+                           ])
+    forward_variables_from(invoker,
+                           "*",
+                           [
+                             "testonly",
+                             "visibility",
+                           ])
 
     script = "//third_party/wayland_standard/python3_action.py"
     _rebased_script = rebase_path(invoker.script, root_build_dir)
@@ -73,16 +76,16 @@ template("wayland_protocol") {
       rebase_path(root_gen_dir, root_build_dir),
     ]
 
-    wayland_scanner_label = "//third_party/wayland_standard:wayland_scanner($host_toolchain)"
+    wayland_scanner_label =
+        "//third_party/wayland_standard:wayland_scanner($host_toolchain)"
 
-    deps = [
-      wayland_scanner_label,
-    ]
+    deps = [ wayland_scanner_label ]
 
     args += [
       "--cmd",
-      "./" + rebase_path(get_label_info(wayland_scanner_label, "root_out_dir"), root_build_dir)
-           + "/graphic/graphic_standard/wayland_scanner",
+      "./" + rebase_path(get_label_info(wayland_scanner_label, "root_out_dir"),
+                         root_build_dir) +
+          "/graphic/graphic_standard/wayland_scanner",
     ]
   }
 
@@ -101,8 +104,6 @@ template("wayland_protocol") {
       "//third_party/wayland_standard:wayland_util",
     ]
 
-    public_configs = [
-      ":$config_name",
-    ]
+    public_configs = [ ":$config_name" ]
   }
 }
