@@ -16,7 +16,9 @@ config("wayland_default_config") {
 action("wayland_version") {
   script = "gen_wayland_version_header_wrapper.sh"
   inputs = [ "src/wayland-version.h.in" ]
-  outputs = [ "$root_gen_dir/" + rebase_path(get_path_info(inputs[0], "dir"), "//") + "/wayland-version.h" ]
+  outputs =
+      [ "$root_gen_dir/" + rebase_path(get_path_info(inputs[0], "dir"), "//") +
+        "/wayland-version.h" ]
   args = [
     rebase_path("gen_wayland_version_header.sh", root_build_dir),
     rebase_path("configure.ac", root_build_dir),
@@ -24,15 +26,14 @@ action("wayland_version") {
     rebase_path(outputs[0], root_build_dir),
   ]
 }
+
 ## Generate Wayland Version }}}
 
 ## Build wayland_scanner {{{
 config("wayland_scanner_config") {
   visibility = [ ":*" ]
 
-  include_dirs = [
-    ".",
-  ]
+  include_dirs = [ "." ]
 
   cflags = [
     "-Wno-int-conversion",
@@ -43,39 +44,35 @@ config("wayland_scanner_config") {
 ohos_executable("wayland_scanner") {
   install_enable = false
 
-  sources = [
-    "src/scanner.c",
-  ]
+  sources = [ "src/scanner.c" ]
 
-  configs = [
-    ":wayland_scanner_config",
-  ]
+  configs = [ ":wayland_scanner_config" ]
 
   deps = [
-    "//third_party/expat:expat",
     ":wayland_util",
+    "//third_party/expat:expat",
   ]
 
   part_name = "graphic_standard"
   subsystem_name = "graphic"
 }
+
 ## Build wayland_scanner }}}
 
 ## Generate Wayland Protocols {{{
 wayland_protocol("wayland_core_protocol") {
   sources = [ "protocol/wayland.xml" ]
 }
+
 ## Generate Wayland Protocols }}}
 
 ## Build wayland_util.a {{{
 config("wayland_util_config") {
   visibility = [ ":*" ]
 
-  include_dirs = [
-  ]
+  include_dirs = []
 
-  cflags = [
-  ]
+  cflags = []
 }
 
 config("wayland_util_public_config") {
@@ -85,9 +82,7 @@ config("wayland_util_public_config") {
     "src",
   ]
 
-  cflags = [
-    "-Wno-macro-redefined",
-  ]
+  cflags = [ "-Wno-macro-redefined" ]
 }
 
 ohos_static_library("wayland_util") {
@@ -102,44 +97,34 @@ ohos_static_library("wayland_util") {
     ":wayland_default_config",
   ]
 
-  public_configs = [
-    ":wayland_util_public_config",
-  ]
+  public_configs = [ ":wayland_util_public_config" ]
 
-  deps = [
-  ]
+  deps = []
 
-  public_deps = [
-  ]
+  public_deps = []
 }
+
 ## Build wayland_util.a }}}
 
 ## Build libwayland_cursor.a {{{
 config("libwayland_cursor_config") {
   visibility = [ ":*" ]
 
-  include_dirs = [
-    ".",
-  ]
+  include_dirs = [ "." ]
 
-  cflags = [
-    "-Wno-macro-redefined",
-  ]
+  cflags = [ "-Wno-macro-redefined" ]
 }
 
 config("libwayland_cursor_public_config") {
-  include_dirs = [
-    "cursor",
-  ]
+  include_dirs = [ "cursor" ]
 
-  cflags = [
-  ]
+  cflags = []
 }
 
 ohos_static_library("libwayland_cursor") {
   sources = [
-    "cursor/wayland-cursor.c",
     "cursor/os-compatibility.c",
+    "cursor/wayland-cursor.c",
     "cursor/xcursor.c",
   ]
 
@@ -148,39 +133,56 @@ ohos_static_library("libwayland_cursor") {
     ":libwayland_cursor_config",
   ]
 
-  public_configs = [
-    ":libwayland_cursor_public_config",
-  ]
+  public_configs = [ ":libwayland_cursor_public_config" ]
 
-  deps = [
-  ]
+  deps = []
 
-  public_deps = [
-    ":wayland_core_protocol",
-  ]
+  public_deps = [ ":wayland_core_protocol" ]
 }
+
 ## Build libwayland_cursor.a }}}
 
 ## Build libwayland_client.a {{{
 config("libwayland_client_config") {
   visibility = [ ":*" ]
 
-  include_dirs = [
-  ]
+  include_dirs = []
 
-  cflags = [
-  ]
+  cflags = []
 }
 
 config("libwayland_client_public_config") {
-  include_dirs = [
-    "src",
-  ]
+  include_dirs = [ "src" ]
 
-  cflags = [
-  ]
+  cflags = []
 }
 
+ohos_shared_library("libwayland_client.0") {
+  sources = [
+    "src/connection.c",
+    "src/wayland-client.c",
+    "src/wayland-os.c",
+  ]
+
+  configs = [
+    ":wayland_default_config",
+    ":libwayland_client_config",
+  ]
+
+  public_configs = [ ":libwayland_client_public_config" ]
+
+  deps = [ "//third_party/libffi:ffi" ]
+
+  public_deps = [
+    ":wayland_core_protocol",
+    ":wayland_version",
+  ]
+  symlink_target_name = [ "libwayland-client.so.0" ]
+  part_name = "graphic_standard"
+  subsystem_name = "graphic"
+}
+
+## Build libwayland_client.a }}}
 ohos_static_library("libwayland_client") {
   sources = [
     "src/connection.c",
@@ -193,19 +195,16 @@ ohos_static_library("libwayland_client") {
     ":libwayland_client_config",
   ]
 
-  public_configs = [
-    ":libwayland_client_public_config",
-  ]
+  public_configs = [ ":libwayland_client_public_config" ]
 
-  deps = [
-    "//third_party/libffi:ffi",
-  ]
+  deps = [ "//third_party/libffi:ffi" ]
 
   public_deps = [
     ":wayland_core_protocol",
     ":wayland_version",
   ]
 }
+
 ## Build libwayland_client.a }}}
 
 ## Build libwayland_server.a {{{
@@ -217,26 +216,22 @@ config("libwayland_server_config") {
     ".",
   ]
 
-  cflags = [
-    "-Wno-macro-redefined",
-  ]
+  cflags = [ "-Wno-macro-redefined" ]
 }
 
 config("libwayland_server_public_config") {
-  include_dirs = [
-  ]
+  include_dirs = []
 
-  cflags = [
-  ]
+  cflags = []
 }
 
 ohos_static_library("libwayland_server") {
   sources = [
     "src/connection.c",
+    "src/event-loop.c",
     "src/wayland-os.c",
     "src/wayland-server.c",
     "src/wayland-shm.c",
-    "src/event-loop.c",
   ]
 
   configs = [
@@ -244,17 +239,41 @@ ohos_static_library("libwayland_server") {
     ":libwayland_server_config",
   ]
 
-  public_configs = [
-    ":libwayland_server_public_config",
-  ]
+  public_configs = [ ":libwayland_server_public_config" ]
 
   deps = [
-    "//third_party/libffi:ffi",
     ":wayland_util",
+    "//third_party/libffi:ffi",
   ]
 
-  public_deps = [
-    ":wayland_core_protocol",
+  public_deps = [ ":wayland_core_protocol" ]
+}
+
+## Build libwayland_server.a }}}
+ohos_shared_library("libwayland_server.0") {
+  sources = [
+    "src/connection.c",
+    "src/event-loop.c",
+    "src/wayland-os.c",
+    "src/wayland-server.c",
+    "src/wayland-shm.c",
   ]
+
+  configs = [
+    ":wayland_default_config",
+    ":libwayland_server_config",
+  ]
+
+  public_configs = [ ":libwayland_server_public_config" ]
+
+  deps = [
+    ":wayland_util",
+    "//third_party/libffi:ffi",
+  ]
+
+  symlink_target_name = [ "libwayland-server.so.0" ]
+  public_deps = [ ":wayland_core_protocol" ]
+  part_name = "graphic_standard"
+  subsystem_name = "graphic"
 }
 ## Build libwayland_server.a }}}
