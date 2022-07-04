@@ -85,7 +85,7 @@ template("wayland_protocol") {
       "--cmd",
       "./" + rebase_path(get_label_info(wayland_scanner_label, "root_out_dir"),
                          root_build_dir) +
-          "/graphic/graphic_standard/wayland_scanner",
+          "/graphic/graphic_graphic_2d/wayland_scanner",
     ]
   }
 
