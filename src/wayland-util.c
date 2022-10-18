@@ -216,7 +216,6 @@ wl_map_insert_new(struct wl_map *map, uint32_t flags, void *data)
 		start = entries->data;
 	}
 
-
 	/* wl_array only grows, so if we have too many objects at
 	 * this point there's no way to clean up. We could be more
 	 * pro-active about trying to avoid this allocation, but
